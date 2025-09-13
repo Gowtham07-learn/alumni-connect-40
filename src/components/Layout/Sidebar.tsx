@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useToast } from "@/hooks/use-toast";
 import { 
   LayoutDashboard, 
   Rss, 
@@ -13,6 +14,7 @@ import {
 } from "lucide-react";
 
 const Sidebar = () => {
+  const { toast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -28,6 +30,10 @@ const Sidebar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   const handleLogout = () => {
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    });
     navigate("/");
   };
 

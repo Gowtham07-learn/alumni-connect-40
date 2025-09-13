@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Heart, MessageCircle, Share2, MoreHorizontal } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Post {
   id: number;
@@ -18,6 +19,7 @@ interface Post {
 }
 
 const Feed = () => {
+  const { toast } = useToast();
   const [posts, setPosts] = useState<Post[]>([
     {
       id: 1,
@@ -66,6 +68,7 @@ const Feed = () => {
   ]);
 
   const handleLike = (id: number) => {
+    const post = posts.find(p => p.id === id);
     setPosts(prev =>
       prev.map(post =>
         post.id === id
@@ -77,6 +80,13 @@ const Feed = () => {
           : post
       )
     );
+    
+    if (post && !post.liked) {
+      toast({
+        title: "Post Liked!",
+        description: `You liked ${post.author}'s post`,
+      });
+    }
   };
 
   const getTypeColor = (type: string) => {

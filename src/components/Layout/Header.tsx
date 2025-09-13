@@ -9,8 +9,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const Header = () => {
+  const { toast } = useToast();
   const navigate = useNavigate();
 
   return (
@@ -27,11 +29,27 @@ const Header = () => {
         </div>
 
         <div className="flex items-center space-x-3">
-          <Button variant="ghost" size="icon" className="hover:bg-secondary">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="hover:bg-secondary"
+            onClick={() => toast({
+              title: "Settings",
+              description: "Settings panel coming soon!",
+            })}
+          >
             <Settings className="h-5 w-5" />
           </Button>
           
-          <Button variant="ghost" size="icon" className="hover:bg-secondary">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="hover:bg-secondary"
+            onClick={() => toast({
+              title: "Notifications",
+              description: "You have 3 new notifications",
+            })}
+          >
             <Bell className="h-5 w-5" />
           </Button>
 

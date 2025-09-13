@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Search, MapPin, Building2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface AlumniMember {
   id: number;
@@ -18,6 +19,7 @@ interface AlumniMember {
 }
 
 const Networking = () => {
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [members, setMembers] = useState<AlumniMember[]>([
     {
@@ -63,6 +65,7 @@ const Networking = () => {
   ]);
 
   const handleConnect = (id: number) => {
+    const member = members.find(m => m.id === id);
     setMembers(prev => 
       prev.map(member => 
         member.id === id 
@@ -70,6 +73,15 @@ const Networking = () => {
           : member
       )
     );
+    
+    if (member) {
+      toast({
+        title: member.connected ? "Disconnected" : "Connected!",
+        description: member.connected 
+          ? `You have disconnected from ${member.name}`
+          : `You are now connected with ${member.name}`,
+      });
+    }
   };
 
   const filteredMembers = members.filter(member =>

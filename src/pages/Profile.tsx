@@ -6,8 +6,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Camera, Edit2, MapPin, Building2, Calendar, Mail, Phone, Globe } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
+  const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({
     name: "John Doe",
@@ -25,7 +27,10 @@ const Profile = () => {
 
   const handleSave = () => {
     setIsEditing(false);
-    // Here you would typically save to backend
+    toast({
+      title: "Profile Updated!",
+      description: "Your profile information has been saved successfully.",
+    });
   };
 
   const skills = ["JavaScript", "React", "Node.js", "Python", "AWS", "Docker"];

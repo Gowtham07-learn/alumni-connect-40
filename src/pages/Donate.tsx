@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Heart, TrendingUp, Users, Target } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Campaign {
   id: number;
@@ -18,6 +19,7 @@ interface Campaign {
 }
 
 const Donate = () => {
+  const { toast } = useToast();
   const [customAmount, setCustomAmount] = useState("");
   const [selectedCampaign, setSelectedCampaign] = useState<number | null>(null);
   
@@ -186,7 +188,18 @@ const Donate = () => {
                         className="bg-white/70"
                       />
                       <div className="flex space-x-2">
-                        <Button className="flex-1">
+                        <Button 
+                          className="flex-1"
+                          onClick={() => {
+                            const amount = customAmount || "0";
+                            toast({
+                              title: "Donation Successful!",
+                              description: `Thank you for your ${amount > "0" ? `$${amount}` : ""} donation to ${campaign.title}`,
+                            });
+                            setCustomAmount("");
+                            setSelectedCampaign(null);
+                          }}
+                        >
                           Donate ${customAmount || "0"}
                         </Button>
                         <Button 

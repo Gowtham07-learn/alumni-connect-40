@@ -4,9 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, ArrowRight, Users, Heart, Star } from "lucide-react";
 
 const Index = () => {
+  const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +19,12 @@ const Index = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    toast({
+      title: isSignUp ? "Account Created!" : "Welcome Back!",
+      description: isSignUp 
+        ? "Your account has been created successfully." 
+        : "You have been successfully logged in.",
+    });
     navigate("/dashboard");
   };
 

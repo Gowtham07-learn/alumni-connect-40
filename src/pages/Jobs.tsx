@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Search, MapPin, Building2, Clock, DollarSign } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Job {
   id: number;
@@ -18,6 +19,7 @@ interface Job {
 }
 
 const Jobs = () => {
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [jobs, setJobs] = useState<Job[]>([
     {
@@ -67,6 +69,7 @@ const Jobs = () => {
   ]);
 
   const handleApply = (id: number) => {
+    const job = jobs.find(j => j.id === id);
     setJobs(prev =>
       prev.map(job =>
         job.id === id
@@ -74,6 +77,15 @@ const Jobs = () => {
           : job
       )
     );
+    
+    if (job) {
+      toast({
+        title: job.applied ? "Application Withdrawn" : "Application Submitted!",
+        description: job.applied 
+          ? `You have withdrawn your application for ${job.title}`
+          : `Your application for ${job.title} at ${job.company} has been submitted successfully.`,
+      });
+    }
   };
 
   const getTypeColor = (type: string) => {

@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, Users, Clock } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Event {
   id: number;
@@ -18,6 +19,7 @@ interface Event {
 }
 
 const Events = () => {
+  const { toast } = useToast();
   const [events, setEvents] = useState<Event[]>([
     {
       id: 1,
@@ -70,6 +72,7 @@ const Events = () => {
   ]);
 
   const handleRegister = (id: number) => {
+    const event = events.find(e => e.id === id);
     setEvents(prev =>
       prev.map(event =>
         event.id === id
@@ -81,6 +84,15 @@ const Events = () => {
           : event
       )
     );
+    
+    if (event) {
+      toast({
+        title: event.registered ? "Registration Cancelled" : "Successfully Registered!",
+        description: event.registered 
+          ? `You have cancelled your registration for ${event.title}`
+          : `You are now registered for ${event.title} on ${event.date}`,
+      });
+    }
   };
 
   const getTypeColor = (type: string) => {
